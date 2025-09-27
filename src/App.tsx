@@ -16,7 +16,21 @@ function App() {
   const cities = [
     'London', 'New York', 'Tokyo', 'Paris', 'Sydney', 'Cairo', 'Rio de Janeiro',
     'Moscow', 'Toronto', 'Dubai', 'Cape Town', 'Beijing', 'Berlin', 'Rome', 'Bangkok',
-    'Istanbul', 'Mumbai', 'Mexico City', 'Seoul', 'Singapore'
+    'Istanbul', 'Mumbai', 'Mexico City', 'Seoul', 'Singapore',
+    'Los Angeles', 'Chicago', 'San Francisco', 'Madrid', 'Barcelona', 'Lisbon', 'Vienna',
+    'Prague', 'Budapest', 'Warsaw', 'Helsinki', 'Stockholm', 'Oslo', 'Copenhagen',
+    'Zurich', 'Geneva', 'Brussels', 'Amsterdam', 'Dublin', 'Edinburgh', 'Venice',
+    'Florence', 'Athens', 'Tel Aviv', 'Jerusalem', 'Doha', 'Kuala Lumpur', 'Jakarta',
+    'Manila', 'Hanoi', 'Ho Chi Minh City', 'Lagos', 'Nairobi', 'Johannesburg',
+    'Buenos Aires', 'Santiago', 'Lima', 'Bogota', 'Caracas', 'Montreal', 'Vancouver',
+    'Boston', 'Miami', 'San Diego', 'Houston', 'Dallas', 'Philadelphia', 'Phoenix',
+    'Seattle', 'Melbourne', 'Auckland', 'Perth', 'Brisbane', 'Adelaide', 'Cape Town',
+    'Casablanca', 'Marrakesh', 'Rabat', 'Algiers', 'Tunis', 'Accra', 'Abuja', 'Kampala',
+    'Addis Ababa', 'Dar es Salaam', 'Kigali', 'Antananarivo', 'Port Louis', 'Colombo',
+    'Kathmandu', 'Dhaka', 'Karachi', 'Lahore', 'Islamabad', 'Tehran', 'Baghdad',
+    'Riyadh', 'Jeddah', 'Mecca', 'Medina', 'Muscat', 'Abu Dhabi', 'Sharjah', 'Doha',
+    'Kuwait City', 'Amman', 'Beirut', 'Damascus', 'Aleppo', 'Sanaa', 'Tripoli',
+    'Benghazi', 'Tunis', 'Algiers', 'Rabat', 'Fes', 'Tangier', 'Marrakesh', 'Agadir'
   ];
   const [weatherList, setWeatherList] = useState<WeatherData[]>([]);
   const [loading, setLoading] = useState(false);
