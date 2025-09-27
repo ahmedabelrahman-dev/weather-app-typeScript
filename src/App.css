@@ -26,9 +26,12 @@ body {
   border-radius: 1.5rem;
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
   padding: 2.5rem 2rem 2rem 2rem;
-  max-width: 350px;
+  max-width: 1400px;
   width: 100%;
   margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .weather-title {
@@ -83,13 +86,33 @@ body {
   font-weight: 500;
 }
 
+.weather-cards-grid { 
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 2rem 0 0 0;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.weather-card {
+  min-width: 220px;
+  max-width: 240px;
+  width: 100%;
+  flex: 1 1 0;
+}
+
 .weather-card {
   background: #f4faff;
   border-radius: 1.2rem;
   box-shadow: 0 2px 12px 0 rgba(31, 38, 135, 0.08);
   padding: 1.5rem 1rem;
-  margin-top: 1rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .weather-main {
   display: flex;

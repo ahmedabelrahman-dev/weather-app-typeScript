@@ -1,6 +1,6 @@
 # demo
 
-![demo picture](demo_picture.jpeg)
+![demo picture](demo-picture.png)
 
 # React + TypeScript + Vite
 

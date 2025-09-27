@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 
 type WeatherData = {
@@ -13,24 +13,35 @@ type WeatherData = {
 };
 
 function App() {
-  const [city, setCity] = useState('');
-  const [weather, setWeather] = useState<WeatherData | null>(null);
+  const cities = [
+    'London', 'New York', 'Tokyo', 'Paris', 'Sydney', 'Cairo', 'Rio de Janeiro',
+    'Moscow', 'Toronto', 'Dubai', 'Cape Town', 'Beijing', 'Berlin', 'Rome', 'Bangkok',
+    'Istanbul', 'Mumbai', 'Mexico City', 'Seoul', 'Singapore'
+  ];
+  const [weatherList, setWeatherList] = useState<WeatherData[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const fetchWeather = async (e: React.FormEvent) => {
-    e.preventDefault();
+  function getRandomCities(count: number) {
+    const shuffled = [...cities].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+  }
+
+  const fetchWeatherForCities = async (cityNames: string[]) => {
     setLoading(true);
     setError('');
-    setWeather(null);
+    setWeatherList([]);
     try {
       const apiKey = '1da56765c1c874776b767cbe97d54eab'; // Replace with your API key
-      const res = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`
-      );
-      if (!res.ok) throw new Error('City not found');
-      const data = await res.json();
-      setWeather(data);
+      const promises = cityNames.map(async (city) => {
+        const res = await fetch(
+          `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`
+        );
+        if (!res.ok) throw new Error('City not found: ' + city);
+        return res.json();
+      });
+      const data = await Promise.all(promises);
+      setWeatherList(data);
     } catch (err: any) {
       setError(err.message || 'Error fetching weather');
     } finally {
@@ -38,42 +49,46 @@ function App() {
     }
   };
 
+  // Fetch weather for 5 random cities on mount
+  useEffect(() => {
+    const randomCities = getRandomCities(5);
+    fetchWeatherForCities(randomCities);
+    // eslint-disable-next-line
+  }, []);
+
+  const handleRefresh = () => {
+    const randomCities = getRandomCities(5);
+    fetchWeatherForCities(randomCities);
+  };
+
   return (
     <div className="weather-app-container">
       <h1 className="weather-title">Weather App</h1>
-      <form className="weather-form" onSubmit={fetchWeather}>
-        <input
-          className="weather-input"
-          type="text"
-          placeholder="Enter city name"
-          value={city}
-          onChange={e => setCity(e.target.value)}
-          required
-        />
-        <button className="weather-btn" type="submit" disabled={loading}>
-          {loading ? 'Loading...' : 'Get Weather'}
-        </button>
-      </form>
       {error && <div className="weather-error">{error}</div>}
-      {weather && (
-        <div className="weather-card">
-          <h2>{weather.name}</h2>
-          <div className="weather-main">
-            <img
-              src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
-              alt={weather.weather[0].description}
-            />
-            <div>
-              <div className="weather-temp">{Math.round(weather.main.temp)}°C</div>
-              <div className="weather-desc">{weather.weather[0].description}</div>
+      <div className="weather-cards-grid">
+        {weatherList.map((weather, idx) => (
+          <div className="weather-card" key={weather.name + idx}>
+            <h2>{weather.name}</h2>
+            <div className="weather-main">
+              <img
+                src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+                alt={weather.weather[0].description}
+              />
+              <div>
+                <div className="weather-temp">{Math.round(weather.main.temp)}°C</div>
+                <div className="weather-desc">{weather.weather[0].description}</div>
+              </div>
+            </div>
+            <div className="weather-details">
+              <span>Humidity: {weather.main.humidity}%</span>
+              <span>Wind: {weather.wind.speed} m/s</span>
             </div>
           </div>
-          <div className="weather-details">
-            <span>Humidity: {weather.main.humidity}%</span>
-            <span>Wind: {weather.wind.speed} m/s</span>
-          </div>
-        </div>
-      )}
+        ))}
+      </div>
+      <button className="weather-btn" onClick={handleRefresh} disabled={loading} style={{marginTop: '2rem'}}>
+        {loading ? 'Loading...' : 'Refresh Cities'}
+      </button>
     </div>
   );
 }
